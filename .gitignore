@@ -1,0 +1,7 @@
+*.pycs
+.DS_Store
+*.log
+.static_storage
+.media/
+__pycache__/
+.ssh
