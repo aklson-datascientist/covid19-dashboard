@@ -65,6 +65,7 @@ fields_mapping = {
 # a function to create world map for a given statistic
 def create_worldmap(statistic, statistics, merged_data, stats_max):
 
+    statistics = statistics.copy()
     if statistic in statistics:
         statistics.remove(statistic)
     statistics.insert(0, statistic)
