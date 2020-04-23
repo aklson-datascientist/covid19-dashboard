@@ -6,3 +6,5 @@
 __pycache__/
 .ssh
 .ipynb_checkpoints/
+worldmap/static/
+worldmap/dashboard/templates/dashboard/files/*.html
