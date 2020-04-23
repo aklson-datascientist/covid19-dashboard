@@ -11,9 +11,9 @@ from django.http import HttpResponse
 
 from bs4 import BeautifulSoup
 
-from .functions_variables import PROJECT_DIR, FILES_PATH, WEBSITE_URL
-from .functions_variables import misspelled_countries_dict, fields, fields_mapping
+from .functions_variables import PROJECT_DIR, FILES_PATH, WEBSITE_URL, fields, fields_mapping
 from .functions_variables import create_worldmap, write_map_file
+from .countries_mapping import countries_dict
 
 # Create your views here.
 def index(request):
@@ -28,54 +28,47 @@ def index(request):
     table_body_rows = table_body_content.find_all('tr')
 
     countries_row_data = {}
-    countries_names = []
+    countries_in_table = []
     for row_content in table_body_rows:
-        try:
+        if row_content.td.a is not None:
             country_name = row_content.td.a.text.strip()
+            if country_name in countries_dict:
+                country_name = countries_dict[country_name]
             countries_row_data[country_name] = row_content
-            countries_names.append(country_name)
-        except:
-            pass
+            countries_in_table.append(country_name)
 
     geojson_file = os.path.join(FILES_PATH, 'countries_complete_geo.json')
 
     with open(geojson_file) as countries_file:
         countries_geodata = json.load(countries_file)
 
-    countries_oi = []
+    countries_on_map = []
     for country_geodata in countries_geodata['features']:
-        countries_oi.append(country_geodata['properties']['admin'])
-
-    countries_dict = {}
-    for country in countries_names:
-        if country in countries_oi:
-            countries_dict[country] = country
-
-    countries_dict.update(misspelled_countries_dict)
+        countries_on_map.append(country_geodata['properties']['admin'])
 
     stats_max = {}
     stats_min = {}
     countries_data = []
-    for country in countries_dict:
 
-        country_row_data = countries_row_data[country]
-        statistics_rows = country_row_data.find_all('td')
-
+    for country_geodata in countries_geodata['features']:
+        country_name = country_geodata['properties']['admin']
         country_data = {}
-        country_data['country'] = countries_dict[country]
+        country_data['country'] = country_name
 
-        for ind, statistic_tag in enumerate(statistics_rows[1:-1]):
+        if country_name in countries_dict.values():
 
-            statistic = statistic_tag.text
+            country_row_data = countries_row_data[country_name]
+            statistics_rows = country_row_data.find_all('td')
 
-            if re.match('(\s+)', statistic) or statistic == '':
-                statistic = '0.0'
-            elif statistic == 'N/A':
-                statistic = 'No Data'
-            elif statistic[0] == '+':
-                statistic = statistic[1:]
+            for ind, statistic_tag in enumerate(statistics_rows[1:-1]):
+                statistic = statistic_tag.text
+                if re.match('(\s+)', statistic) or statistic == '':
+                    statistic = '0.0'
+                elif statistic == 'N/A':
+                    statistic = "Nan"
+                elif statistic[0] == '+':
+                    statistic = statistic[1:]
 
-            if statistic != 'No Data':
                 statistic = float(statistic.replace(',', ''))
 
                 # add statistic to stats_max
@@ -91,8 +84,8 @@ def index(request):
                 else:
                     if statistic < stats_min[fields[ind]]:
                         stats_min[fields[ind]] = statistic
+                country_data[fields[ind]] = statistic
 
-            country_data[fields[ind]] = statistic
         countries_data.append(country_data)
 
     countries_data = pd.json_normalize(countries_data)

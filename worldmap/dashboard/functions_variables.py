@@ -13,33 +13,6 @@ sys.path.append(PROJECT_DIR)
 FILES_PATH = os.path.join(PROJECT_DIR, 'dashboard/templates/dashboard/files')
 WEBSITE_URL = 'https://www.worldometers.info/coronavirus/'
 
-misspelled_countries_dict = {
-    'USA': 'United States of America',
-    'UK':  'United Kingdom',
-    'S. Korea': 'South Korea',
-    'Czechia': 'Czech Republic',
-    'UAE': 'United Arab Emirates',
-    'Serbia': 'Republic of Serbia',
-    'North Macedonia': 'Macedonia',
-    'Hong Kong': 'Hong Kong S.A.R.',
-    'DRC': 'Democratic Republic of the Congo',
-    'Faeroe Islands': 'Faroe Islands',
-    'Tanzania': 'United Republic of Tanzania',
-    'Congo': 'Republic of Congo',
-    'Cabo Verde': 'Cape Verde',
-    'Bahamas': 'The Bahamas',
-    'Guinea-Bissau': 'Guinea Bissau',
-    'Macao': 'Macao S.A.R',
-    'Eswatini': 'Swaziland',
-    'Timor-Leste': 'East Timor',
-    'CAR': 'Central African Republic',
-    'St. Vincent Grenadines':  'Saint Vincent and the Grenadines',
-    'Turks and Caicos': 'Turks and Caicos Islands',
-    'Vatican City': 'Vatican',
-    'St. Barth': 'Saint Barthelemy',
-    'Saint Pierre Miquelon':  'Saint Pierre and Miquelon',
-}
-
 fields = [
     'total_cases', 'new_cases', 'total_deaths',
     'new_deaths', 'total_recovered', 'active_cases',
