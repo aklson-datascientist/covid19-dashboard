@@ -43,9 +43,6 @@ INSTALLED_APPS = [
     # dashaboard
     'dashboard',
 
-    # django angular
-    'djng',
-
     # django compressor
     'compressor',
 ]
@@ -62,7 +59,6 @@ COMPRESS_PRECOMPILERS = (
 
 
 MIDDLEWARE = [
-    'djng.middleware.AngularUrlMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
