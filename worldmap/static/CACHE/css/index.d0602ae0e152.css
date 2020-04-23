@@ -1,0 +1,21 @@
+/* line 1, dashboard/static/dashboard/styles/index.scss */
+#title {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+
+/* line 6, dashboard/static/dashboard/styles/index.scss */
+#buttons-div-outer {
+  padding-right: 0px;
+  padding-bottom: 10px; }
+
+/* line 11, dashboard/static/dashboard/styles/index.scss */
+#buttons-div-inner {
+  float: right; }
+
+/* line 15, dashboard/static/dashboard/styles/index.scss */
+.statistic-true {
+  background-color: #209cee; }
+
+/* line 19, dashboard/static/dashboard/styles/index.scss */
+.statistic-false {
+  background-color: #D3D3D3; }

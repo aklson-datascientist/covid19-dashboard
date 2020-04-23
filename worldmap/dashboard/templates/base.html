@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  {% load static %}
+  {% load compress %}
+
+  <head>
+
+    {% block meta %}
+    {% endblock meta %}
+
+
+    {% block cdnjs %}
+
+    {% endblock cdnjs %}
+
+
+    {% block cdncss %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    {% endblock cdncss %}
+
+    {% compress css %}
+    {% block css %}
+    <link rel="stylesheet" type="text/x-scss" href="{% static 'dashboard/styles/base.scss' %}"/>
+    {% endblock css %}
+    {% endcompress %}
+
+
+    <title>{% block title %}World Map of Different Metrics Due to COVID-19 Pandemic{% endblock title %}</title>
+  </head>
+
+
+
+  <body>
+    {% block header %}
+    {% endblock header %}
+
+    {% block content %}
+    {% endblock content %}
+
+    {% block js %}
+      <script src="{% static 'dashboard/scripts/django-angular.js' %}"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+    {% endblock js %}
+
+  </body>
+
+  <footer>
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+    <a href="https://enabledatascience.com/"> enabledatascience.com</a>
+  </div>
+  </footer>
+
+</html>

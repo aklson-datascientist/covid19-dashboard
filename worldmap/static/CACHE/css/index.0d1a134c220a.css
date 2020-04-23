@@ -1,0 +1,11 @@
+/* line 1, dashboard/static/dashboard/styles/index.scss */
+#title-buttons {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+
+/* line 6, dashboard/static/dashboard/styles/index.scss */
+.button {
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%); }
