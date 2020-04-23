@@ -1,10 +1,5 @@
 var app = angular.module('statisticsmaps', []);
 
-app.config(['$httpProvider', function($httpProvider) {
-  $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-  $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
-}]);
-
 app.controller('statistics', ['$scope',
   function($scope) {
 
@@ -14,8 +9,6 @@ app.controller('statistics', ['$scope',
     $scope.new_cases = false;
     $scope.new_deaths = false;
     $scope.active_cases = false;
-
-    $scope.statistic_type = 'total_cases'
 
     $scope.set_statistic_type = function(event) {
       if (event == 'total_cases') {
