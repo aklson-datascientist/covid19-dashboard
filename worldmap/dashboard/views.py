@@ -27,38 +27,19 @@ def index(request):
     table_body_content = table_content.find("tbody")
     table_body_rows = table_body_content.find_all('tr')
 
-    countries_row_data = {}
-    countries_in_table = []
+    stats_max = {}
+    stats_min = {}
+    countries_data = []
+
     for row_content in table_body_rows:
         if row_content.td.a is not None:
             country_name = row_content.td.a.text.strip()
             if country_name in countries_dict:
                 country_name = countries_dict[country_name]
-            countries_row_data[country_name] = row_content
-            countries_in_table.append(country_name)
 
-    geojson_file = os.path.join(FILES_PATH, 'countries_complete_geo.json')
-
-    with open(geojson_file) as countries_file:
-        countries_geodata = json.load(countries_file)
-
-    countries_on_map = []
-    for country_geodata in countries_geodata['features']:
-        countries_on_map.append(country_geodata['properties']['admin'])
-
-    stats_max = {}
-    stats_min = {}
-    countries_data = []
-
-    for country_geodata in countries_geodata['features']:
-        country_name = country_geodata['properties']['admin']
-        country_data = {}
-        country_data['country'] = country_name
-
-        if country_name in countries_dict.values():
-
-            country_row_data = countries_row_data[country_name]
-            statistics_rows = country_row_data.find_all('td')
+            country_data = {}
+            country_data['country'] = country_name
+            statistics_rows = row_content.find_all('td')
 
             for ind, statistic_tag in enumerate(statistics_rows[1:-1]):
                 statistic = statistic_tag.text
@@ -86,9 +67,13 @@ def index(request):
                         stats_min[fields[ind]] = statistic
                 country_data[fields[ind]] = statistic
 
-        countries_data.append(country_data)
+            countries_data.append(country_data)
 
     countries_data = pd.json_normalize(countries_data)
+
+    geojson_file = os.path.join(FILES_PATH, 'countries_complete_geo.json')
+    with open(geojson_file) as countries_file:
+        countries_geodata = json.load(countries_file)
 
     countries_geodata_df = gpd.GeoDataFrame.from_features(countries_geodata, crs='EPSG:4326')
     columns_to_keep = ['geometry', 'admin', 'continent']
@@ -96,9 +81,9 @@ def index(request):
 
     merged_data = countries_geodata_df.merge(countries_data, left_on='admin', right_on='country', how='left')
 
-    statistics = ['total_cases', 'total_deaths', 'new_cases', 'new_deaths', 'active_cases', 'serious_critical', 'total_recovered']
+    statistics = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths', 'active_cases', 'serious_critical', 'total_recovered']
 
-    for statistic in statistics[0:5]:
+    for statistic in statistics[0:2]:
         statistic_map = create_worldmap(statistic, statistics, merged_data, stats_max)
         statistic_map_code = statistic_map._repr_html_()
         write_map_file(statistic_map_code, '{}_map'.format(statistic))

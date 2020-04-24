@@ -24,10 +24,10 @@
         <div class="btn-group" role="group" id="buttons-div-inner">
           {% verbatim %}
           <button class="btn btn-primary {{ 'statistic-' + total_cases }}" ng-click="set_statistic_type('total_cases')">Total Cases</button>
-          <button class="btn btn-primary {{ 'statistic-' + total_deaths }}" ng-click="set_statistic_type('total_deaths')">Total Deaths</button>
           <button class="btn btn-primary {{ 'statistic-' + new_cases }}" ng-click="set_statistic_type('new_cases')">New Cases</button>
+          <!-- <button class="btn btn-primary {{ 'statistic-' + total_deaths }}" ng-click="set_statistic_type('total_deaths')">Total Deaths</button>
           <button class="btn btn-primary {{ 'statistic-' +  new_deaths }}" ng-click="set_statistic_type('new_deaths')">New Deaths</button>
-          <button class="btn btn-primary {{ 'statistic-' + active_cases }}" ng-click="set_statistic_type('active_cases')">Active Cases</button>
+          <button class="btn btn-primary {{ 'statistic-' + active_cases }}" ng-click="set_statistic_type('active_cases')">Active Cases</button> -->
           {% endverbatim %}
         </div>
       </div>
@@ -38,18 +38,18 @@
     <div class="row" ng-model="total_cases" ng-show="total_cases">
       {% include "dashboard/files/total_cases_map.html" %}
     </div>
-    <div class="row" ng-model="total_deaths" ng-show="total_deaths">
-      {% include "dashboard/files/total_deaths_map.html" %}
-    </div>
     <div class="row" ng-model="new_cases" ng-show="new_cases">
       {% include "dashboard/files/new_cases_map.html" %}
+    </div>
+    <!-- <div class="row" ng-model="total_deaths" ng-show="total_deaths">
+      {% include "dashboard/files/total_deaths_map.html" %}
     </div>
     <div class="row" ng-model="new_deaths" ng-show="new_deaths">
       {% include "dashboard/files/new_deaths_map.html" %}
     </div>
     <div class="row" ng-model="active_cases" ng-show="active_cases">
       {% include "dashboard/files/active_cases_map.html" %}
-    </div>
+    </div> -->
   </div>
 
 </div>
