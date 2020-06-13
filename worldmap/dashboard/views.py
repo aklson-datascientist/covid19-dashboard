@@ -32,8 +32,13 @@ def index(request):
     countries_data = []
 
     for row_content in table_body_rows:
-        if row_content.td.a is not None:
-            country_name = row_content.td.a.text.strip()
+        # print(row_content)
+        statistics_rows = row_content.find_all('td')
+        # print(statistics_rows)
+        # if row_content.td.a is not None:
+        if statistics_rows[1].a is not None:
+            print('I am in')
+            country_name = statistics_rows[1].a.text.strip()
             if country_name in countries_dict:
                 country_name = countries_dict[country_name]
 
@@ -41,7 +46,8 @@ def index(request):
             country_data['country'] = country_name
             statistics_rows = row_content.find_all('td')
 
-            for ind, statistic_tag in enumerate(statistics_rows[1:-1]):
+            for ind, statistic_tag in enumerate(statistics_rows[2:-2]):
+                print(ind)
                 statistic = statistic_tag.text
                 if re.match('(\s+)', statistic) or statistic == '':
                     statistic = '0.0'
@@ -70,6 +76,7 @@ def index(request):
             countries_data.append(country_data)
 
     countries_data = pd.json_normalize(countries_data)
+    print(countries_data)
 
     geojson_file = os.path.join(FILES_PATH, 'countries_complete_geo.json')
     with open(geojson_file) as countries_file:
@@ -79,6 +86,8 @@ def index(request):
     columns_to_keep = ['geometry', 'admin', 'continent']
     countries_geodata_df = countries_geodata_df[columns_to_keep]
 
+    print(countries_geodata_df.head())
+    print(countries_data.head())
     merged_data = countries_geodata_df.merge(countries_data, left_on='admin', right_on='country', how='left')
 
     statistics = ['total_cases', 'new_cases', 'total_deaths', 'new_deaths', 'active_cases', 'serious_critical', 'total_recovered']
@@ -87,7 +96,5 @@ def index(request):
         statistic_map = create_worldmap(statistic, statistics, merged_data, stats_max)
         statistic_map_code = statistic_map._repr_html_()
         write_map_file(statistic_map_code, '{}_map'.format(statistic))
-
-    print('map for {} is generated'.format(statistic))
 
     return render(request, 'dashboard/index.html')
